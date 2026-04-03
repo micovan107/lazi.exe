@@ -1,0 +1,29 @@
+name: Lazi Auto Transfer
+
+on:
+  schedule:
+    # Cứ mỗi tiếng chạy 1 lần (giờ quốc tế UTC, muốn giờ VN thì trừ đi 7 tiếng)
+    - cron: '0 * * * *' 
+  workflow_dispatch: 
+    # Cái dòng này cực quan trọng để ông thấy cái nút "Run workflow" trên giao diện GitHub
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Bot Puppeteer
+        env:
+          # Nhớ là Secret ông đặt tên gì thì chỗ này phải khớp tên đó nhé Nam
+          LAZI_COOKIES_JSON: ${{ secrets.LAZI_COOKIES_JSON }} 
+        run: node bot.js
