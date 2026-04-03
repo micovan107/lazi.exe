@@ -1,0 +1,6 @@
+{
+  "name": "lazi-bot",
+  "dependencies": {
+    "puppeteer": "^21.0.0"
+  }
+}
