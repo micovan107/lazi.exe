@@ -1,3 +1,5 @@
+name: Lazi Auto Transfer
+
 on:
   workflow_dispatch:
     inputs:
@@ -12,7 +14,21 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      # Bước 1: Tải code từ Repo của ông xuống máy ảo GitHub
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Bước 2: Cài đặt môi trường Node.js (như kiểu cài phần mềm vào Windows ấy)
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # Bước 3: Cài đặt thư viện (Đọc file package.json để lôi Puppeteer về)
+      - name: Install dependencies
+        run: npm install
+
+      # Bước 4: Giờ mới là lúc cho Bot "xuất kích"
       - name: Run Bot
         env:
           LAZI_COOKIES_JSON: ${{ secrets.LAZI_COOKIES_JSON }}
