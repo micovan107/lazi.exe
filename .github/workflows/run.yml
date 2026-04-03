@@ -9,29 +9,37 @@ on:
       so_xu:
         description: 'Số xu'
         default: '10'
+      # THÊM Ô NÀY ĐỂ KHÔNG BỊ LỖI 422 KHI PHP GỬI SANG
+      note:
+        description: 'Lời nhắn tặng kèm'
+        default: 'Auto từ Dikey.vn'
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    
     steps:
-      # Bước 1: Tải code từ Repo của ông xuống máy ảo GitHub
+      # Bước 1: Lấy code từ Repo về máy ảo
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Bước 2: Cài đặt môi trường Node.js (như kiểu cài phần mềm vào Windows ấy)
+      # Bước 2: Cài Node.js bản 18 (Ổn định nhất cho Puppeteer)
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      # Bước 3: Cài đặt thư viện (Đọc file package.json để lôi Puppeteer về)
+      # Bước 3: Cài đặt Puppeteer và các thư viện trong package.json
       - name: Install dependencies
         run: npm install
 
-      # Bước 4: Giờ mới là lúc cho Bot "xuất kích"
+      # Bước 4: Chạy Bot với đầy đủ biến môi trường
       - name: Run Bot
         env:
+          # Lấy từ GitHub Secrets
           LAZI_COOKIES_JSON: ${{ secrets.LAZI_COOKIES_JSON }}
+          # Lấy từ Inputs lúc ông nhấn nút (hoặc từ PHP gửi sang)
           TARGET_URL: ${{ github.event.inputs.target_url }}
           SO_XU: ${{ github.event.inputs.so_xu }}
+          NOTE: ${{ github.event.inputs.note }}
         run: node bot.js
